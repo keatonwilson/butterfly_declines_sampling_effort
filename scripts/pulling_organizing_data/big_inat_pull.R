@@ -16,7 +16,10 @@ max_lat = 49
 bounds = c(min_lat, min_long, max_lat, max_long)
 
 # So, let's just test
-# test = get_inat_obs(year = 1975, quality = "research", bounds = bounds, maxresults = 10000)
+test = get_inat_obs(year = 1975, 
+                    quality = "research", 
+                    bounds = bounds, 
+                    maxresults = 10000)
 
 # ok, let's set up a loop to loop through this
 # Because of the size of these data, we're going to to loop by month and year
@@ -33,13 +36,24 @@ for(i in seq_along(year_list)){
                    day = k,
                    maxresults = 10000,
                    bounds = bounds, 
-                   quality = "research"))
+                   quality = "research"), 
+                 silent = TRUE)
       if(class(temp) == "try-error"){
-        print("No data for this year:month:day combination")
+        print(paste0("No data for ", 
+                     year_list[[i]], 
+                     "-", 
+                     month_list[[j]], 
+                     "-",
+                     k,
+                     " combination"))
       } else if(nrow(temp) == 10000){
         print("Max size reached for this month/year combination: problematic")
+        temp = temp %>% 
+          select(scientific_name, datetime, user_login)
         inat_data = bind_rows(inat_data, temp)
       } else {
+        temp = temp %>% 
+          select(scientific_name, datetime, user_login)
         inat_data = bind_rows(inat_data, temp)
       }
     }  
