@@ -65,6 +65,7 @@ for(i in seq_along(year_list)){
         inat_data = bind_rows(inat_data, temp)
         print(dim(inat_data))
       }
+      Sys.sleep(time = 10)
     }  
   }
   size = nrow(inat_data)
