@@ -14,6 +14,7 @@ occ = read_csv("./data/full_occs.csv")
 occ_inat = occ %>%
   filter(prov == "inat")
 
+
 # joining
 joined_occ = occ_inat %>%
   mutate(year = year(date)) %>%
