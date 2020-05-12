@@ -59,3 +59,4 @@ area_calc = function(df){
 
 # testing
 ranges = bind_rows(lapply(butt_split, area_calc))
+write_csv(ranges, "./output/range_confs.csv")
