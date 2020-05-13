@@ -14,6 +14,7 @@ inat_data = read_tsv("./data/inat_data/occurrence.txt")
 state_list = c("California", "Oregon", "Washington", "Idaho", "Montana", 
                "Wymoning", "Nevada", "Utah", "Arizona", "New Mexico", 
                "Colorado")
+
 inat_slim = inat_data %>%
   select(identifier, recordedBy, scientificName, 
          eventDate, countryCode, stateProvince, 
@@ -30,12 +31,13 @@ inat_slim %>%
 # (general, not location specific)
 # 
 effort_summary = inat_slim %>%
-  select(recordedBy, eventDate) %>%
+  select(recordedBy, eventDate, stateProvince) %>%
   transmute(date = date(eventDate), 
-            recordedBy = recordedBy) %>%
+            recordedBy = recordedBy, 
+            state = stateProvince) %>%
   distinct() %>%
   mutate(year = year(date)) %>%
-  group_by(year) %>%
+  group_by(year, state) %>%
   summarize(year_total_person_days = n()) 
 
 
