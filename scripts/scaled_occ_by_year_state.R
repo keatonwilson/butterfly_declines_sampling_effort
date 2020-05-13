@@ -17,7 +17,7 @@ joined_occ = occ %>%
   filter(year >= 1985 & year < 2020) %>%
   group_by(year, species, stateProvince) %>%
   summarize(n = n()) %>%
-  left_join(effort, by = 'year') %>%
+  left_join(effort, by = c('year', 'stateProvince' = 'state')) %>%
   mutate(index = n/year_total_person_days)
 
 
