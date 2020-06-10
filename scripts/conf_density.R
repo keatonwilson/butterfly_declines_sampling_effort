@@ -11,6 +11,9 @@ library(pracma)     # area of polygon calculation
 library(tidyverse)  # data wrangling, especially dplyr
 library(SpatialEpi) # conversion to kilometers
 
+# reading in data
+butt_occs = read_csv("./data/big_butterfly_occs_all_species.csv")
+
 # filtering out species with less than 10 observations
 butt_occs = butt_occs %>% 
   dplyr::group_by(species) %>%
@@ -89,7 +92,13 @@ density_area_calc = function(df, conf_level = 0.95) {
   
   # Bind and return
   df_out = data.frame(name = df$species[1], 
-                      area = total_area)
+                      area = total_area, 
+                      average_lat = mean(df$decimalLatitude), 
+                      average_long = mean(df$decimalLongitude), 
+                      max_lat = max(df$decimalLatitude), 
+                      min_lat = min(df$decimalLatitude), 
+                      max_long = max(df$decimalLongitude), 
+                      min_long = min(df$decimalLongitude))
   return(df_out)
 }
 
