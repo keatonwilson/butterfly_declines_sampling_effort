@@ -11,6 +11,10 @@ library(lubridate)
 effort = read_csv("./data/effort_summary.csv")
 occ = read_csv("./data/big_butterfly_occs_all_species.csv")
 
+# modified effort df
+effort_no_state = effort %>% group_by(year) %>%
+  summarize(year_total_person_days = sum(year_total_person_days))
+
 # joining
 joined_occ = occ %>%
   mutate(year = year(eventDate)) %>%
@@ -18,6 +22,14 @@ joined_occ = occ %>%
   group_by(year, species) %>%
   summarize(n = n()) %>%
   left_join(effort, by = 'year') %>%
+  mutate(index = n/year_total_person_days)
+
+joined_no_state = occ %>%
+  mutate(year = year(eventDate)) %>%
+  filter(year >= 1985 & year < 2020) %>%
+  group_by(year, species) %>%
+  summarize(n = n()) %>%
+  left_join(effort_no_state, by = 'year') %>%
   mutate(index = n/year_total_person_days)
 
 top_6 = joined_occ %>%
@@ -57,4 +69,9 @@ joined_occ = joined_occ %>%
   rename(counts = n, effort = year_total_person_days, 
          effort_scaled_counts = index)
 
+joined_occ_nostate = joined_no_state %>%
+  rename(counts = n, effort = year_total_person_days, 
+         effort_scaled_counts = index)
+
 write_csv(joined_occ, path = "./output/effort_scaled_counts.csv")
+write_csv(joined_occ_nostate, path = "./output/effort_scaled_counts_no_state.csv")
