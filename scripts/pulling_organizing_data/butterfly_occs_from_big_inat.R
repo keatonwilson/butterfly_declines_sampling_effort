@@ -10,7 +10,7 @@ inat_data = read_tsv("./data/inat_data/occurrence.txt")
 
 # slimming down
 state_list = c("California", "Oregon", "Washington", "Idaho", "Montana", 
-               "Wymoning", "Nevada", "Utah", "Arizona", "New Mexico", 
+               "Wyoming", "Nevada", "Utah", "Arizona", "New Mexico", 
                "Colorado")
 
 inat_west_small = inat_data %>%
@@ -39,3 +39,8 @@ butts = leps %>%
 # writing to csv
 write_csv(butts, "./data/big_butterfly_occs_all_species.csv")
 
+write_csv(butts %>% 
+            select(acceptedScientificName, species, genus, family, order, 
+                   decimalLatitude, decimalLongitude, countryCode, 
+                   stateProvince, eventDate), 
+          "~/Desktop/butterfly_occ_export.csv")

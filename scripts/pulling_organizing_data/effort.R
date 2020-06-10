@@ -12,7 +12,7 @@ inat_data = read_tsv("./data/inat_data/occurrence.txt")
 
 # slimming down
 state_list = c("California", "Oregon", "Washington", "Idaho", "Montana", 
-               "Wymoning", "Nevada", "Utah", "Arizona", "New Mexico", 
+               "Wyoming", "Nevada", "Utah", "Arizona", "New Mexico", 
                "Colorado")
 
 inat_slim = inat_data %>%
